@@ -1,1 +1,0 @@
-See https://github.com/Flow-Launcher/Flow.Launcher.Plugin.HelloWorldNodeJS instead
