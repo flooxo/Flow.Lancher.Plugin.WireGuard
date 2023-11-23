@@ -11,10 +11,7 @@ namespace Flow.Launcher.Plugin.WireGuard
 
         public List<Result> Query(Query query)
         {
-            //todo: get all wireguard connections
-            // TODO: verschieben nach init, variabel machen
-            // path can be .conf or .conf.dpapi
-            var tunnelPaths = @"C:\Program Files\WireGuard\Data\Configurations\";            
+            var tunnelPaths = @"C:\Program Files\WireGuard\Data\Configurations\";
             var filePaths = Directory.GetFiles(tunnelPaths);
 
             var resultList = new List<Result>();
@@ -22,18 +19,18 @@ namespace Flow.Launcher.Plugin.WireGuard
             {
                 resultList.Add(new Result
                 {
-                    Title = Path.GetFileNameWithoutExtension(filePath),
+                    Title = GetFileNameWithoutExtensions(filePath),
                     SubTitle = filePath,
                     IcoPath = "Images/wireguard.png",
                     Action = e =>
                     {
-                        //TODO: as action, connect/disconnect to wireguard connection
-                        var command = $"wireguard.exe /installtunnelservice \"{filePath}.dpapi\"";
+                        //TODO: wireguard has to run?
+                        var command = $"wireguard.exe /installtunnelservice \"{filePath}\"";
                         ProcessStartInfo info = new()
                         {
                             FileName = "cmd.exe",
                             Verb = "runas",
-                            //Arguments = $"/c {command}",
+                            Arguments = $"/c {command}",
                             UseShellExecute = true,
                             WindowStyle = ProcessWindowStyle.Hidden
                         };
@@ -44,21 +41,6 @@ namespace Flow.Launcher.Plugin.WireGuard
                     }
                 });
             }
-
-            // var result = new Result
-            // {
-            //     Title = "WIREGUARD",
-            //     SubTitle = $"tunnelPaths: {tunnelPaths}",
-            //     IcoPath = "Images/wireguard.png"
-            //     Action = c =>
-            //     {
-            //         //todo: as action, connect/disconnect to wireguard connection
-            //         Context.API.ShowMsg(Context.API.GetTranslation("plugin_helloworldcsharp_greet_title"),
-            //                                 Context.API.GetTranslation("plugin_helloworldcsharp_greet_subtitle"));
-            //         return true;
-            //     },
-            // };
-            // return new List<Result> { result };
 
             return resultList;
         }
@@ -76,6 +58,11 @@ namespace Flow.Launcher.Plugin.WireGuard
         public string GetTranslatedPluginDescription()
         {
             return Context.API.GetTranslation("plugin_helloworldcsharp_plugin_description");
+        }
+
+        private string GetFileNameWithoutExtensions(string filePath)
+        {
+            return Path.GetFileNameWithoutExtension(filePath.EndsWith(".conf.dpapi") ? Path.GetFileNameWithoutExtension(filePath) : filePath);
         }
     }
 }
