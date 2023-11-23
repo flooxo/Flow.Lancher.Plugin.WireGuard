@@ -8,5 +8,5 @@
   "Language": "csharp",
   "Website": "https://github.com/Flow-Launcher/plugin-samples", //TODO: update
   "ExecuteFileName": "HelloWorldCSharp.dll",//TODO: update
-  "IcoPath": "Images\\app.png"//TODO: update
+  "IcoPath": "Images\\wireguard.png"
 }
