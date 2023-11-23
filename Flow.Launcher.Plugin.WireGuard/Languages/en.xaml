@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <system:String x:Key="plugin_wireguard_name">Hello World CSharp</system:String>
+    <system:String x:Key="plugin_wireguard_plugin_description">Hello World CSharp</system:String>
+</ResourceDictionary>

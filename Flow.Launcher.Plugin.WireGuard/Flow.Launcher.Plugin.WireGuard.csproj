@@ -4,8 +4,8 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <ProjectGuid>{03FFA443-5F50-48D5-8869-F3DF316803AA}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WireGuard</RootNamespace>
-    <AssemblyName>WireGuard</AssemblyName>
+    <RootNamespace>Flow.Launcher.Plugin.WireGuard</RootNamespace>
+    <AssemblyName>Flow.Launcher.Plugin.WireGuard</AssemblyName>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>

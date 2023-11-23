@@ -5,13 +5,16 @@ using System.Diagnostics;
 
 namespace Flow.Launcher.Plugin.WireGuard
 {
-    public class Main : IPlugin, IPluginI18n
+    public class WireGuardPlugin : IPlugin, IPluginI18n
     {
         internal PluginInitContext Context;
 
+        private const string Image = $"Images\wireguard.png";
+
+        private string tunnelPaths = @"C:\Program Files\WireGuard\Data\Configurations\";
+
         public List<Result> Query(Query query)
         {
-            var tunnelPaths = @"C:\Program Files\WireGuard\Data\Configurations\";
             var filePaths = Directory.GetFiles(tunnelPaths);
 
             var resultList = new List<Result>();
@@ -21,7 +24,7 @@ namespace Flow.Launcher.Plugin.WireGuard
                 {
                     Title = GetFileNameWithoutExtensions(filePath),
                     SubTitle = filePath,
-                    IcoPath = "Images/wireguard.png",
+                    IcoPath = Image,
                     Action = e =>
                     {
                         //TODO: wireguard has to run?
@@ -48,16 +51,20 @@ namespace Flow.Launcher.Plugin.WireGuard
         public void Init(PluginInitContext context)
         {
             Context = context;
+            if (!Directory.Exists(tunnelPaths))
+            {
+                throw new Exception($"Plugin Wireguard: {tunnelPaths} not found.");
+            }
         }
 
         public string GetTranslatedPluginTitle()
         {
-            return Context.API.GetTranslation("plugin_helloworldcsharp_plugin_name");
+            return Context.API.GetTranslation("plugin_wireguard_name");
         }
 
         public string GetTranslatedPluginDescription()
         {
-            return Context.API.GetTranslation("plugin_helloworldcsharp_plugin_description");
+            return Context.API.GetTranslation("plugin_wireguard_plugin_description");
         }
 
         private string GetFileNameWithoutExtensions(string filePath)
