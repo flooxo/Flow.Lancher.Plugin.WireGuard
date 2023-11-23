@@ -1,5 +1,5 @@
 {
-  "ID": "CEA0FDFC6D3B4085823D60DC76F28844", //TODO: update
+  "ID": "89f50521dd80461895ae6ce1b700f444",
   "ActionKeyword": "vpn",
   "Name": "WireGuard",
   "Description": "Connect via WireGuard VPN connections",
