@@ -11,7 +11,7 @@ namespace HelloWorldCSharp
         {
             var result = new Result
             {
-                Title = "Hello World from CSharp",
+                Title = "WIREGUARD VPN PLUGIN TEST",
                 SubTitle = $"Query: {query.Search}",
                 Action = c =>
                 {
