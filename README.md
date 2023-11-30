@@ -1,6 +1,7 @@
-# Flow-Launcher Plugin Samples
+# Flow-Launcher WireGuard Plugin
 
-This repository contains the source code of three sample Flow-Launcher plugins, written in C#, F# and Python. You can use these as a starting point when developing a new plugin.
+This plugin allows to establish a connection with a [WireGuard](https://www.wireguard.com/) VPN tunnel via [FlowLauncher](https://www.flowlauncher.com/).
+
 
 ## Getting Started
 
@@ -8,44 +9,40 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them.
+To install and use this plugin, you will need the following:
+
+- [FlowLauncher](https://www.flowlauncher.com/)
+- [WireGuard Windows Client](https://www.wireguard.com/install/#windows-7-81-10-11-2008r2-2012r2-2016-2019-2022)
+
+Please make sure you have the latest versions of both installed before proceeding.
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development environment running.
+#### FlowLauncher
 
-## Running the tests
+![Install](installation.png)
+Run `pm install WireGuard` in FlowLauncher to install this plugin
 
-Explain how to run the automated tests for this system.
+#### Manual
+Unzip [the latest version](https://github.com/flooxo/Flow.Plugin.WireGuard/releases) into your plugin directory (default: `%appdata%\FlowLauncher\Plugins` or run `userdata` in FlowLauncher)
 
-## Deployment
+## Configuration
 
-Add additional notes about how to deploy this on a live system.
+| Setting     | Type    | Default                                         | Description             |
+|-------------|---------|-------------------------------------------------|-------------------------|
+| `config path` | string  | `C:\Program Files\WireGuard\Data\Configurations\` | path to your WireGuard tunnel configurations |
 
-## Built With
+## Usage
 
-* [Flow-Launcher](https://flow-launcher.github.io/) - The plugin framework used
+- actionword: `vpn`
 
-## Contributing
+![Example](usage.png) Example
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+When the actionword is called, it displays all the available VPN tunnels from the configuration.
+The user can select a tunnel to connect to it. If the tunnel is already connected, selecting it again will disconnect the connection.
+If the user already has an active VPN connection, selecting a new tunnel will switch the connection to the new tunnel.
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
-
-## Authors
-
-* **Your Name** - *Initial work* - [YourName](https://github.com/yourname)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
