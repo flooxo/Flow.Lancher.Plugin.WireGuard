@@ -20,7 +20,7 @@ Please make sure you have the latest versions of both installed before proceedin
 
 #### FlowLauncher
 
-![Install](installation.png)
+![Install](assets/installation.png)
 Run `pm install WireGuard` in FlowLauncher to install this plugin
 
 #### Manual
@@ -36,7 +36,7 @@ Unzip [the latest version](https://github.com/flooxo/Flow.Plugin.WireGuard/relea
 
 - actionword: `vpn`
 
-![Example](usage.png) Example
+![Example](assets/usage.png) Example
 
 When the actionword is called, it displays all the available VPN tunnels from the configuration.
 The user can select a tunnel to connect to it. If the tunnel is already connected, selecting it again will disconnect the connection.
