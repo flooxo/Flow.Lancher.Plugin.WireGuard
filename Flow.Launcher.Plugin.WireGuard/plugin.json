@@ -7,6 +7,6 @@
   "Version": "1.0.0",
   "Language": "csharp",
   "Website": "https://github.com/flooxo/Flow.Plugin.WireGuard",
-  "ExecuteFileName": "WireGuard.dll",
+  "ExecuteFileName": "Flow.Launcher.Plugin.WireGuard.dll",
   "IcoPath": "Images\\wireguard.png"
 }
