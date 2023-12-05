@@ -7,7 +7,7 @@ namespace Flow.Launcher.Plugin.WireGuard
     public class Settings
     {
         internal string SettingsPathLocation;
-		public string WireGuardConfigPath { get; set; }
+        public string WireGuardConfigPath { get; set; }
 
         internal Action<Settings> OnSettingsChanged { get; set; }
 

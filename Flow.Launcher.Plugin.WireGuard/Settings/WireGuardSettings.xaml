@@ -10,6 +10,7 @@
     Loaded="WireGuardSettings_Loaded"
     mc:Ignorable="d">
     <Border Margin="60,10,10,20">
+        <StackPanel>
             <Label Margin="10,5,5,5" Content="WireGuard Configuration Path:" />
             <DockPanel Margin="10,5,5,5">
                 <Button
