@@ -3,6 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.IO;
+using Forms = System.Windows.Forms;
 
 namespace Flow.Launcher.Plugin.WireGuard
 {
@@ -10,20 +11,23 @@ namespace Flow.Launcher.Plugin.WireGuard
 	{
 		private Settings settings;
 
-		public WireGuardSettings(Settings settings) {
+		public WireGuardSettings(Settings settings)
+		{
 			InitializeComponent();
 			this.settings = settings;
 		}
 
-		private void WireGuardSettings_Loaded(object sender, RoutedEventArgs e) {
+		private void WireGuardSettings_Loaded(object sender, RoutedEventArgs e)
+		{
 			WireGuardConfigPath.Text = settings.WireGuardConfigPath;
 		}
 
-		private void btnOpenPath_Click(object sender, RoutedEventArgs e) {
-			FolderBrowserDialog fdb = new FolderBrowserDialog();
+		private void btnOpenPath_Click(object sender, RoutedEventArgs e)
+		{
+			Forms.FolderBrowserDialog fdb = new Forms.FolderBrowserDialog();
 
 			var result = fdb.ShowDialog();
-			if(result == true)
+			if (result == Forms.DialogResult.OK)
 			{
 				WireGuardConfigPath.Text = fdb.SelectedPath;
 				settings.WireGuardConfigPath = fdb.SelectedPath;
