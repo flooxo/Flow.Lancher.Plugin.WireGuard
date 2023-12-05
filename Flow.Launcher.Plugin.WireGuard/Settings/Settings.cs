@@ -6,14 +6,14 @@ namespace Flow.Launcher.Plugin.WireGuard
 {
     public class Settings
     {
-        internal string SettingsPathLocation;
+        internal string SettingsFileLocation;
         public string WireGuardConfigPath { get; set; }
 
         internal Action<Settings> OnSettingsChanged { get; set; }
 
         internal void Save()
         {
-            File.WriteAllText(SettingsPathLocation, JsonSerializer.Serialize(this));
+            File.WriteAllText(SettingsFileLocation, JsonSerializer.Serialize(this));
         }
     }
 }

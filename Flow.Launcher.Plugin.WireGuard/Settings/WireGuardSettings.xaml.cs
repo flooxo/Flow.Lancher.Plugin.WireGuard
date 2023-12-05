@@ -17,7 +17,7 @@ namespace Flow.Launcher.Plugin.WireGuard
 			this.settings = settings;
 		}
 
-		private void WireGuardSettings_Loaded(object sender, RoutedEventArgs e)
+		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			WireGuardConfigPath.Text = settings.WireGuardConfigPath;
 		}

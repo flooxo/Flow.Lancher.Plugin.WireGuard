@@ -1,15 +1,18 @@
 ﻿using Flow.Launcher.Plugin;
-using System.Collections.Generic;
+using System;
+using System.Text.Json;
 using System.IO;
 using System.Diagnostics;
-using System;
 using System.Collections;
+using System.Collections.Generic;
+
 
 namespace Flow.Launcher.Plugin.WireGuard
 {
-    public class WireGuardPlugin : IPlugin, IPluginI18n
+    public class WireGuardPlugin : IPlugin, IPluginI18n, ISettingProvider
     {
         internal PluginInitContext Context;
+        private Settings settings;
 
         private const string Image = @"Images\wireguard.png";
 
@@ -42,6 +45,35 @@ namespace Flow.Launcher.Plugin.WireGuard
         public void Init(PluginInitContext context)
         {
             Context = context;
+
+            var settingsFolderLocation =
+                Path.Combine(
+                    Directory.GetParent(
+                        Directory.GetParent(context.CurrentPluginMetadata.PluginDirectory).FullName)
+                    .FullName,
+                    "Settings", "Plugins", "Flow.Launcher.Plugin.WireGuard");
+
+            var settingsFileLocation = Path.Combine(settingsFolderLocation, "Settings.json");
+
+            if (!Directory.Exists(settingsFolderLocation))
+            {
+                Directory.CreateDirectory(settingsFolderLocation);
+
+                settings = new Settings
+                {
+                    SettingsFileLocation = settingsFileLocation
+                };
+
+                settings.Save();
+            }
+            else
+            {
+                settings = JsonSerializer.Deserialize<Settings>(File.ReadAllText(settingsFileLocation));
+                settings.SettingsFileLocation = settingsFileLocation;
+            }
+
+            settings.OnSettingsChanged = (s) => settings.Save();
+
             if (!Directory.Exists(configPath))
             {
                 //Log.Exception($"Plugin Wireguard: {configPath} not found."); //TODO: log
@@ -70,11 +102,15 @@ namespace Flow.Launcher.Plugin.WireGuard
             return Path.GetFileNameWithoutExtension(filePath.EndsWith(".conf.dpapi") ? Path.GetFileNameWithoutExtension(filePath) : filePath);
         }
 
-        private void getProcess(string tunnelPath, Command commandType){
+        private void getProcess(string tunnelPath, Command commandType)
+        {
             string command = "";
-            if (commandType == Command.install){
+            if (commandType == Command.install)
+            {
                 command = $"wireguard.exe /installtunnelservice \"{tunnelPath}\"";
-            } else if (commandType == Command.uninstall){
+            }
+            else if (commandType == Command.uninstall)
+            {
                 var tunnelName = GetFileNameWithoutExtensions(tunnelPath);
                 command = $"wireguard.exe /uninstall \"{tunnelName}\"";
             }
@@ -87,18 +123,26 @@ namespace Flow.Launcher.Plugin.WireGuard
                 WindowStyle = ProcessWindowStyle.Hidden
             };
 
-            try{
+            try
+            {
                 Process.Start(info);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 //Log.Error($"Failed to install tunnel service for {tunnelPath}");
                 //Log.Exception(e);
             }
         }
+
+        public System.Windows.Controls.Control CreateSettingPanel()
+        {
+            return new WireGuardSettings(settings);
+        }
     }
 
     enum Command
-{
-    install,    
-    uninstall
-}
+    {
+        install,
+        uninstall
+    }
 }
