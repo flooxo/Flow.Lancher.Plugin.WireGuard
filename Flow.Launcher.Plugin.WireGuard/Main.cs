@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 
-
 namespace Flow.Launcher.Plugin.WireGuard
 {
     public class WireGuardPlugin : IPlugin, IPluginI18n, ISettingProvider
@@ -19,6 +18,11 @@ namespace Flow.Launcher.Plugin.WireGuard
         private string configPath = @"C:\Program Files\WireGuard\Data\Configurations\";
         private string[] tunnelPaths = Array.Empty<string>();
 
+        /// <summary>
+        /// Queries the WireGuard plugin for Flow Launcher.
+        /// </summary>
+        /// <param name="query">The query entered by the user.</param>
+        /// <returns>A list of results based on the query.</returns>
         public List<Result> Query(Query query)
         {
             var resultList = new List<Result>(tunnelPaths.Length);
@@ -42,6 +46,10 @@ namespace Flow.Launcher.Plugin.WireGuard
             return resultList;
         }
 
+        /// <summary>
+        /// Initializes the WireGuard plugin for Flow Launcher.
+        /// </summary>
+        /// <param name="context">The plugin initialization context.</param>
         public void Init(PluginInitContext context)
         {
             Context = context;
@@ -87,16 +95,11 @@ namespace Flow.Launcher.Plugin.WireGuard
             }
         }
 
-        public string GetTranslatedPluginTitle()
-        {
-            return Context.API.GetTranslation("plugin_wireguard_name");
-        }
-
-        public string GetTranslatedPluginDescription()
-        {
-            return Context.API.GetTranslation("plugin_wireguard_plugin_description");
-        }
-
+        /// <summary>
+        /// Gets the file name without extensions.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns>The file name without extensions.</returns>
         private string GetFileNameWithoutExtensions(string filePath)
         {
             return Path.GetFileNameWithoutExtension(filePath.EndsWith(".conf.dpapi") ? Path.GetFileNameWithoutExtension(filePath) : filePath);
@@ -134,6 +137,10 @@ namespace Flow.Launcher.Plugin.WireGuard
             }
         }
 
+        /// <summary>
+        /// Creates the setting panel for the WireGuard plugin.
+        /// </summary>
+        /// <returns>The setting panel control.</returns>
         public System.Windows.Controls.Control CreateSettingPanel()
         {
             return new WireGuardSettings(settings);
@@ -143,6 +150,9 @@ namespace Flow.Launcher.Plugin.WireGuard
     enum Command
     {
         install,
+        uninstall
+    }
+}
         uninstall
     }
 }
