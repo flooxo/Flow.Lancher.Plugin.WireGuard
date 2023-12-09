@@ -26,10 +26,28 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// <returns>A list of results based on the query.</returns>
         public List<Result> Query(Query query)
         {
-            var interfaces = interfaceService.GetAll()
-                .Where(interface_ => interface_.name.Contains(query.Search, StringComparison.OrdinalIgnoreCase));
+            return interfaceService.GetAll()
+               .Where(interface_ => interface_.name.Contains(query.Search, StringComparison.OrdinalIgnoreCase))
+               .Select(interface_ => new Result
+               {
+                   Title = interface_.name,
+                   SubTitle = interface_.path,
+                   IcoPath = Image,
+                   Action = _ =>
+                   {
+                       if (interface_.isConnected)
+                       {
+                           interface_.deactivate();
+                       }
+                       else
+                       {
+                           interface_.activate();
+                       }
 
-            return null;
+                       return true;
+                   }
+               })
+               .ToList();
         }
 
         /// <summary>
@@ -64,11 +82,14 @@ namespace Flow.Launcher.Plugin.WireGuard
             {
                 settings = JsonSerializer.Deserialize<Settings>(File.ReadAllText(settingsFileLocation));
                 settings.SettingsFileLocation = settingsFileLocation;
+                interfaceService = new WireGuardInterfaceService(settings.WireGuardConfigPath);
             }
 
-            settings.OnSettingsChanged = (s) => settings.Save();
-
-            interfaceService = new WireGuardInterfaceService(settings.WireGuardConfigPath);
+            settings.OnSettingsChanged = (s) =>
+            {
+                settings.Save();
+                interfaceService = new WireGuardInterfaceService(settings.WireGuardConfigPath);
+            };
         }
 
         /// <summary>
@@ -97,11 +118,5 @@ namespace Flow.Launcher.Plugin.WireGuard
         {
             return new WireGuardSettings(settings);
         }
-    }
-
-    enum Command
-    {
-        install,
-        uninstall
     }
 }
