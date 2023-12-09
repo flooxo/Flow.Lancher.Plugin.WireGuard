@@ -9,27 +9,29 @@ namespace Flow.Launcher.Plugin.WireGuard
     {
         public List<WireGuardInterface> wireguardInterfaces { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WireGuardInterfaceService"/> class.
+        /// Populate the wireguardInterfaces list by retrieving all WireGuard configuration files in the specified path
+        /// <param name="configPath">The path to the WireGuard configuration files.</param>
+        /// </summary>
         public WireGuardInterfaceService(string configPath)
         {
-            wireguardInterfaces = new List<WireGuardInterface>(Directory.GetFiles(configPath).Length);
-
-            var wireguardConfigFiles = Directory.GetFiles(configPath);
-            wireguardConfigFiles = Array.FindAll(wireguardConfigFiles, wireguardConfigFile =>
-                wireguardConfigFile.EndsWith(".conf", StringComparison.OrdinalIgnoreCase) ||
-                wireguardConfigFile.EndsWith(".conf.dpapi", StringComparison.OrdinalIgnoreCase));
-
-            foreach (var config in wireguardConfigFiles)
-            {
-                wireguardInterfaces.Add(
-                    new WireGuardInterface
-                    {
-                        name = GetFileNameWithoutExtensions(config),
-                        path = config,
-                        isConnected = false
-                    });
-            }
+            wireguardInterfaces = Directory.GetFiles(configPath)
+                .Where(configFile => configFile.EndsWith(".conf", StringComparison.OrdinalIgnoreCase) ||
+                                     configFile.EndsWith(".conf.dpapi", StringComparison.OrdinalIgnoreCase))
+                .Select(config => new WireGuardInterface
+                {
+                    name = GetFileNameWithoutExtensions(config),
+                    path = config,
+                    isConnected = false
+                })
+                .ToList();
         }
 
+        /// <summary>
+        /// Retrieves all WireGuard interfaces.
+        /// </summary>
+        /// <returns>An enumerable collection of WireGuard interfaces.</returns>
         public IEnumerable<WireGuardInterface> GetAll()
         {
             return wireguardInterfaces;
