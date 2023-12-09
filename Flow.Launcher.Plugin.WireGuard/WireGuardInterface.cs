@@ -21,6 +21,9 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// </summary>
         public bool isConnected { get; set; }
 
+        /// <summary>
+        /// Activates the WireGuard interface by installing the tunnel service.
+        /// </summary>
         public void activate()
         {
             string command = $"wireguard.exe /installtunnelservice \"{path}\"";
@@ -46,6 +49,9 @@ namespace Flow.Launcher.Plugin.WireGuard
             }
         }
 
+        /// <summary>
+        /// Deactivates the WireGuard interface by uninstalling the tunnel service.
+        /// </summary>
         public void deactivate()
         {
             string command = $"wireguard.exe /uninstalltunnelservice \"{name}\"";
@@ -68,6 +74,18 @@ namespace Flow.Launcher.Plugin.WireGuard
             {
                 //Log.Error($"Failed to uninstall tunnel service for {name}");
                 //Log.Exception(e);
+            }
+        }
+
+        public string getSubTitle(PluginInitContext Context)
+        {
+            if (isConnected)
+            {
+                return Context.API.GetTranslation("plugin_wireguard_disconnect");
+            }
+            else
+            {
+                return Context.API.GetTranslation("plugin_wireguard_connect");
             }
         }
     }
