@@ -35,18 +35,18 @@ namespace Flow.Launcher.Plugin.WireGuard
                 .Where(interface_ => interface_ != connectedInterface)
                 .Select(interface_ => new Result
                 {
-                    Title = interface_.Name,
-                    SubTitle = interface_.GetSubTitle(Context, hasConnection, connectedInterface),
+                    Title = interface_.name,
+                    SubTitle = interface_.getSubTitle(Context),
                     IcoPath = Image,
                     Action = _ =>
                     {
-                        if (interface_.IsConnected)
+                        if (interface_.isConnected)
                         {
-                            interface_.Deactivate();
+                            interface_.deactivate();
                         }
                         else
                         {
-                            interface_.Activate(hasConnection, connectedInterface);
+                            interface_.activate();
                         }
 
                         return true;
