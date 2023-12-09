@@ -1,22 +1,23 @@
 ﻿using Flow.Launcher.Plugin;
 using System;
-using System.Text.Json;
 using System.IO;
-using System.Diagnostics;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.Json;
+
 
 namespace Flow.Launcher.Plugin.WireGuard
 {
     public class WireGuardPlugin : IPlugin, IPluginI18n, ISettingProvider
     {
         internal PluginInitContext Context;
+
         private Settings settings;
 
         private const string Image = @"Images\wireguard.png";
 
-        private string configPath = @"C:\Program Files\WireGuard\Data\Configurations\";
-        private string[] tunnelPaths = Array.Empty<string>();
+        private IWireGuardInterfaceService interfaceService;
 
         /// <summary>
         /// Queries the WireGuard plugin for Flow Launcher.
@@ -25,25 +26,10 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// <returns>A list of results based on the query.</returns>
         public List<Result> Query(Query query)
         {
-            var resultList = new List<Result>(tunnelPaths.Length);
+            var interfaces = interfaceService.GetAll()
+                .Where(interface_ => interface_.name.Contains(query.Search, StringComparison.OrdinalIgnoreCase));
 
-            foreach (var tunnelPath in tunnelPaths)
-            {
-                resultList.Add(new Result
-                {
-                    Title = GetFileNameWithoutExtensions(tunnelPath),
-                    SubTitle = tunnelPath,
-                    IcoPath = Image,
-                    Action = e =>
-                    {
-                        //TODO: wireguard has to run?
-                        getProcess(tunnelPath, Command.install);
-                        return true;
-                    }
-                });
-            }
-
-            return resultList;
+            return null;
         }
 
         /// <summary>
@@ -82,59 +68,25 @@ namespace Flow.Launcher.Plugin.WireGuard
 
             settings.OnSettingsChanged = (s) => settings.Save();
 
-            if (!Directory.Exists(configPath))
-            {
-                //Log.Exception($"Plugin Wireguard: {configPath} not found."); //TODO: log
-            }
-            else
-            {
-                tunnelPaths = Directory.GetFiles(configPath);
-                tunnelPaths = Array.FindAll(tunnelPaths, tunnelPath =>
-                    tunnelPath.EndsWith(".conf", StringComparison.OrdinalIgnoreCase) ||
-                    tunnelPath.EndsWith(".conf.dpapi", StringComparison.OrdinalIgnoreCase));
-            }
+            interfaceService = new WireGuardInterfaceService(settings.WireGuardConfigPath);
         }
 
         /// <summary>
-        /// Gets the file name without extensions.
+        /// Retrieves the translated plugin title.
         /// </summary>
-        /// <param name="filePath">The file path.</param>
-        /// <returns>The file name without extensions.</returns>
-        private string GetFileNameWithoutExtensions(string filePath)
+        /// <returns>The translated plugin title.</returns>
+        public string GetTranslatedPluginTitle()
         {
-            return Path.GetFileNameWithoutExtension(filePath.EndsWith(".conf.dpapi") ? Path.GetFileNameWithoutExtension(filePath) : filePath);
+            return Context.API.GetTranslation("plugin_wireguard_name");
         }
 
-        private void getProcess(string tunnelPath, Command commandType)
+        /// <summary>
+        /// Retrieves the translated description of the plugin.
+        /// </summary>
+        /// <returns>The translated plugin description.</returns>
+        public string GetTranslatedPluginDescription()
         {
-            string command = "";
-            if (commandType == Command.install)
-            {
-                command = $"wireguard.exe /installtunnelservice \"{tunnelPath}\"";
-            }
-            else if (commandType == Command.uninstall)
-            {
-                var tunnelName = GetFileNameWithoutExtensions(tunnelPath);
-                command = $"wireguard.exe /uninstall \"{tunnelName}\"";
-            }
-            ProcessStartInfo info = new()
-            {
-                FileName = "cmd.exe",
-                Verb = "runas",
-                Arguments = $"/c {command}",
-                UseShellExecute = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-
-            try
-            {
-                Process.Start(info);
-            }
-            catch (Exception e)
-            {
-                //Log.Error($"Failed to install tunnel service for {tunnelPath}");
-                //Log.Exception(e);
-            }
+            return Context.API.GetTranslation("plugin_wireguard_plugin_description");
         }
 
         /// <summary>
@@ -150,9 +102,6 @@ namespace Flow.Launcher.Plugin.WireGuard
     enum Command
     {
         install,
-        uninstall
-    }
-}
         uninstall
     }
 }
