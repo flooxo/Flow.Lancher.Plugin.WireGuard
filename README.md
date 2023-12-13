@@ -1,6 +1,6 @@
 # Flow-Launcher WireGuard Plugin
 
-This plugin allows to establish a connection with a [WireGuard](https://www.wireguard.com/) VPN tunnel via [FlowLauncher](https://www.flowlauncher.com/).
+This plugin allows to establish a connection with a [WireGuard](https://www.wireguard.com/) VPN interface via [FlowLauncher](https://www.flowlauncher.com/).
 
 
 ## Getting Started
@@ -29,19 +29,21 @@ Unzip [the latest version](https://github.com/flooxo/Flow.Plugin.WireGuard/relea
 
 ## Configuration
 
-| Setting     | Type    | Default                                         | Description             |
-|-------------|---------|-------------------------------------------------|-------------------------|
-| `config path` | string  | `C:\Program Files\WireGuard\Data\Configurations\` | path to your WireGuard tunnel configurations |
+| Setting     | Type    | Default                                             | Description                                  |
+|-------------|---------|-----------------------------------------------------|----------------------------------------------|
+| `config path` | string  | `C:\Program Files\WireGuard\Data\Configurations\` | path to your WireGuard interface configurations |
 
 ## Usage
 
 - actionword: `vpn`
 
-![Example](assets/usage.png)
+![Example](assets/usage.gif)
 
-When the actionword is called, it displays all the available VPN tunnels from the configuration.
-The user can select a tunnel to connect to it. If the tunnel is already connected, selecting it again will disconnect the connection.
-If the user already has an active VPN connection, selecting a new tunnel will switch the connection to the new tunnel.
+When the actionword is called, it displays all the available VPN interfaces from the configuration.
+The user can select a interface to connect to it. If the interface is already connected, selecting it again will disconnect the connection.
+If the user already has an active VPN connection, selecting a new interface will switch the connection to the new interface.
+
+**Info: Therefore, it is only possible to be connected to one VPN interface at a time.**
 
 
 ## License
