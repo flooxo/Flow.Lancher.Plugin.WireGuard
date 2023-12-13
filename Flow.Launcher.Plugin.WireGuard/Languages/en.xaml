@@ -7,5 +7,5 @@
 
     <system:String x:Key="plugin_wireguard_connect">Connect to selected VPN</system:String>
     <system:String x:Key="plugin_wireguard_disconnect">Disconnect from selected VPN</system:String>
-    <system:String x:Key="plugin_wireguard_switch">Switch to selected VPN and disconnect from current VPN</system:String>
+    <system:String x:Key="plugin_wireguard_switch">Switch to selected VPN and disconnect from {0}</system:String>
 </ResourceDictionary>

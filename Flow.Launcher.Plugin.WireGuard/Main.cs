@@ -26,11 +26,15 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// <returns>A list of results based on the query.</returns>
         public List<Result> Query(Query query)
         {
-            return interfaceService.GetAll()
+            var interfaces = interfaceService.GetAll();
+            var connectedInterface = interfaces.FirstOrDefault(interface_ => interface_.isConnected);
+            var hasConnection = connectedInterface != null;
+
+            return interfaces
                 .Select(interface_ => new Result
                 {
                     Title = interface_.name,
-                    SubTitle = interface_.getSubTitle(Context),
+                    SubTitle = interface_.getSubTitle(Context, hasConnection, connectedInterface),
                     IcoPath = Image,
                     Action = _ =>
                     {
@@ -40,7 +44,7 @@ namespace Flow.Launcher.Plugin.WireGuard
                         }
                         else
                         {
-                            interface_.activate();
+                            interface_.activate(hasConnection, connectedInterface);
                         }
                         return true;
                     }
