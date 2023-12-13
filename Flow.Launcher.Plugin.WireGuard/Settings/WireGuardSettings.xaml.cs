@@ -45,7 +45,8 @@ namespace Flow.Launcher.Plugin.WireGuard
 			{
 				WireGuardConfigPath.Text = fdb.SelectedPath;
 				settings.WireGuardConfigPath = fdb.SelectedPath;
-				settings.Save(); //TODO: test behavior
+				settings.Save();
+				settings.OnSettingsChanged?.Invoke(settings);
 			}
 		}
 	}
