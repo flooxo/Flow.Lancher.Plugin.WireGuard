@@ -5,8 +5,6 @@ This plugin allows to establish a connection with a [WireGuard](https://www.wire
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
 ### Prerequisites
 
 To install and use this plugin, you will need the following:
