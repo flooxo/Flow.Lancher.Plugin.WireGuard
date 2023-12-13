@@ -1,4 +1,4 @@
-# Flow-Launcher WireGuard Plugin
+# ![Flow-Launcher WireGuard Plugin](assets/FlowLauncherWireGuardLogo.png)
 
 This plugin allows to establish a connection with a [WireGuard](https://www.wireguard.com/) VPN interface via [FlowLauncher](https://www.flowlauncher.com/).
 
