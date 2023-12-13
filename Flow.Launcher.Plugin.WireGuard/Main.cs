@@ -27,26 +27,24 @@ namespace Flow.Launcher.Plugin.WireGuard
         public List<Result> Query(Query query)
         {
             return interfaceService.GetAll()
-               .Where(interface_ => interface_.name.Contains(query.Search, StringComparison.OrdinalIgnoreCase))
-               .Select(interface_ => new Result
-               {
-                   Title = interface_.name,
-                   SubTitle = interface_.path,
-                   IcoPath = Image,
-                   Action = _ =>
-                   {
-                       if (interface_.isConnected)
-                       {
-                           interface_.deactivate();
-                       }
-                       else
-                       {
-                           interface_.activate();
-                       }
-
-                       return true;
-                   }
-               })
+                .Select(interface_ => new Result
+                {
+                    Title = interface_.name,
+                    SubTitle = interface_.getSubTitle(Context),
+                    IcoPath = Image,
+                    Action = _ =>
+                    {
+                        if (interface_.isConnected)
+                        {
+                            interface_.deactivate();
+                        }
+                        else
+                        {
+                            interface_.activate();
+                        }
+                        return true;
+                    }
+                })
                .ToList();
         }
 
