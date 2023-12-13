@@ -9,17 +9,17 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// <summary>
         /// Gets or sets the name of the interface.
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the path of the WireGuard configuration file.
         /// </summary>
-        public string path { get; set; }
+        public string Path { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the interface is connected.
         /// </summary>
-        public bool isConnected { get; set; }
+        public bool IsConnected { get; set; }
 
         /// <summary>
         /// Activates the WireGuard interface by installing the tunnel service.
@@ -27,11 +27,11 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// </summary>
         /// <param name="hasConnection">A value indicating whether another interface has an active connection.</param>
         /// <param name="connectedInterface">The connected WireGuard interface, otherwise null.</param>
-        public void activate(bool hasConnection, WireGuardInterface connectedInterface)
+        public void Activate(bool hasConnection, WireGuardInterface connectedInterface)
         {
             string command = hasConnection ?
-                $"wireguard.exe /uninstalltunnelservice \"{connectedInterface.name}\" && wireguard.exe /installtunnelservice \"{path}\"" :
-                $"wireguard.exe /installtunnelservice \"{path}\"";
+                $"wireguard.exe /uninstalltunnelservice \"{connectedInterface.Name}\" && wireguard.exe /installtunnelservice \"{Path}\"" :
+                $"wireguard.exe /installtunnelservice \"{Path}\"";
 
             ProcessStartInfo info = new()
             {
@@ -45,10 +45,10 @@ namespace Flow.Launcher.Plugin.WireGuard
             try
             {
                 Process.Start(info);
-                isConnected = true;
+                IsConnected = true;
                 if (hasConnection)
                 {
-                    connectedInterface.isConnected = false;
+                    connectedInterface.IsConnected = false;
                 }
             }
             catch (Exception)
@@ -59,9 +59,9 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// <summary>
         /// Deactivates the WireGuard interface by uninstalling the tunnel service.
         /// </summary>
-        public void deactivate()
+        public void Deactivate()
         {
-            string command = $"wireguard.exe /uninstalltunnelservice \"{name}\"";
+            string command = $"wireguard.exe /uninstalltunnelservice \"{Name}\"";
 
             ProcessStartInfo info = new()
             {
@@ -75,23 +75,23 @@ namespace Flow.Launcher.Plugin.WireGuard
             try
             {
                 Process.Start(info);
-                isConnected = false;
+                IsConnected = false;
             }
             catch (Exception)
             {
             }
         }
 
-        public string getSubTitle(PluginInitContext Context, bool hasConnection, WireGuardInterface connectedInterface)
+        public string GetSubTitle(PluginInitContext Context, bool hasConnection, WireGuardInterface connectedInterface)
         {
-            if (isConnected)
+            if (IsConnected)
             {
                 return Context.API.GetTranslation("plugin_wireguard_disconnect");
             }
             else if (hasConnection)
             {
                 return string.Format(Context.API.GetTranslation("plugin_wireguard_switch"),
-                                        connectedInterface.name);
+                                        connectedInterface.Name);
             }
             else
             {
