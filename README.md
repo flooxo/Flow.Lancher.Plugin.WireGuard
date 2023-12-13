@@ -43,7 +43,9 @@ When the actionword is called, it displays all the available VPN interfaces from
 The user can select a interface to connect to it. If the interface is already connected, selecting it again will disconnect the connection.
 If the user already has an active VPN connection, selecting a new interface will switch the connection to the new interface.
 
-**Info: Therefore, it is only possible to be connected to one VPN interface at a time.**
+*Info:*
+- Therefore, it is only possible to be connected to one VPN interface at a time.
+- Admin rights are required due to encrypted `.conf` files (for further details see [WireGuard Tunnel Service](https://github.com/WireGuard/wireguard-windows/blob/master/docs/enterprise.md#tunnel-service))
 
 
 ## License
