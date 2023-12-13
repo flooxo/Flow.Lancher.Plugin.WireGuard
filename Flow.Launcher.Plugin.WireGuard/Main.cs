@@ -111,7 +111,6 @@ namespace Flow.Launcher.Plugin.WireGuard
 
             settings.OnSettingsChanged = (s) =>
             {
-                settings.Save();
                 interfaceService = new WireGuardInterfaceService(settings.WireGuardConfigPath);
             };
         }
