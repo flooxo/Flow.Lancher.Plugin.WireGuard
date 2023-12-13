@@ -7,7 +7,7 @@ namespace Flow.Launcher.Plugin.WireGuard
 {
     public class WireGuardInterfaceService : IWireGuardInterfaceService
     {
-        public List<WireGuardInterface> wireguardInterfaces { get; set; }
+        public List<WireGuardInterface> WireguardInterfaces { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WireGuardInterfaceService"/> class.
@@ -16,14 +16,14 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// </summary>
         public WireGuardInterfaceService(string configPath)
         {
-            wireguardInterfaces = Directory.GetFiles(configPath)
+            WireguardInterfaces = Directory.GetFiles(configPath)
                 .Where(configFile => configFile.EndsWith(".conf", StringComparison.OrdinalIgnoreCase) ||
                                      configFile.EndsWith(".conf.dpapi", StringComparison.OrdinalIgnoreCase))
                 .Select(config => new WireGuardInterface
                 {
-                    name = GetFileNameWithoutExtensions(config),
-                    path = config,
-                    isConnected = false
+                    Name = GetFileNameWithoutExtensions(config),
+                    Path = config,
+                    IsConnected = false
                 })
                 .ToList();
         }
@@ -34,7 +34,7 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// <returns>An enumerable collection of WireGuard interfaces.</returns>
         public IEnumerable<WireGuardInterface> GetAll()
         {
-            return wireguardInterfaces;
+            return WireguardInterfaces;
         }
 
         /// <summary>

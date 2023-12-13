@@ -7,7 +7,7 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// <summary>
         /// Gets or sets the list of WireGuard interfaces.
         /// </summary>
-        List<WireGuardInterface> wireguardInterfaces { get; set; }
+        List<WireGuardInterface> WireguardInterfaces { get; set; }
 
         /// <summary>
         /// Returns a List of all WireGuard Interfaces.
