@@ -23,10 +23,15 @@ namespace Flow.Launcher.Plugin.WireGuard
 
         /// <summary>
         /// Activates the WireGuard interface by installing the tunnel service.
+        /// Disables the tunnel service of the connected interface if necessary because allow only one connection at a time.
         /// </summary>
-        public void activate()
+        /// <param name="hasConnection">A value indicating whether another interface has an active connection.</param>
+        /// <param name="connectedInterface">The connected WireGuard interface, otherwise null.</param>
+        public void activate(bool hasConnection, WireGuardInterface connectedInterface)
         {
-            string command = $"wireguard.exe /installtunnelservice \"{path}\"";
+            string command = hasConnection ?
+                $"wireguard.exe /uninstalltunnelservice \"{connectedInterface.name}\" && wireguard.exe /installtunnelservice \"{path}\"" :
+                $"wireguard.exe /installtunnelservice \"{path}\"";
 
             ProcessStartInfo info = new()
             {
@@ -41,11 +46,13 @@ namespace Flow.Launcher.Plugin.WireGuard
             {
                 Process.Start(info);
                 isConnected = true;
+                if (hasConnection)
+                {
+                    connectedInterface.isConnected = false;
+                }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                //Log.Error($"Failed to install tunnel service for {tunnelPath}");
-                //Log.Exception(e);
             }
         }
 
@@ -70,18 +77,21 @@ namespace Flow.Launcher.Plugin.WireGuard
                 Process.Start(info);
                 isConnected = false;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                //Log.Error($"Failed to uninstall tunnel service for {name}");
-                //Log.Exception(e);
             }
         }
 
-        public string getSubTitle(PluginInitContext Context)
+        public string getSubTitle(PluginInitContext Context, bool hasConnection, WireGuardInterface connectedInterface)
         {
             if (isConnected)
             {
                 return Context.API.GetTranslation("plugin_wireguard_disconnect");
+            }
+            else if (hasConnection)
+            {
+                return string.Format(Context.API.GetTranslation("plugin_wireguard_switch"),
+                                        connectedInterface.name);
             }
             else
             {
