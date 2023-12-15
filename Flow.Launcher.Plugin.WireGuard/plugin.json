@@ -2,7 +2,7 @@
   "ID": "89f50521dd80461895ae6ce1b700f444",
   "ActionKeyword": "vpn",
   "Name": "WireGuard",
-  "Description": "Connect via WireGuard VPN connections",
+  "Description": "Connect to VPN via WireGuard interfaces",
   "Author": "flooxo",
   "Version": "1.0.0",
   "Language": "csharp",
