@@ -76,7 +76,7 @@ namespace Flow.Launcher.Plugin.WireGuard
                 settings = new Settings
                 {
                     SettingsFileLocation = settingsFileLocation,
-                    WireGuardConfigPath = "C:\Program Files\WireGuard\Data\Configurations"
+                    WireGuardConfigPath = @"C:\Program Files\WireGuard\Data\Configurations"
                 };
 
                 settings.Save();
