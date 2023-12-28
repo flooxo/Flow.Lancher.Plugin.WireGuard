@@ -97,10 +97,13 @@ namespace Flow.Launcher.Plugin.WireGuard
 
                 settings = new Settings
                 {
-                    SettingsFileLocation = settingsFileLocation
+                    SettingsFileLocation = settingsFileLocation,
+                    WireGuardConfigPath = @"C:\Program Files\WireGuard\Data\Configurations"
                 };
 
                 settings.Save();
+
+                interfaceService = new WireGuardInterfaceService(settings.WireGuardConfigPath);
             }
             else
             {
