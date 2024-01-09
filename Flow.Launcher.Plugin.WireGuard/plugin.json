@@ -4,7 +4,7 @@
   "Name": "WireGuard",
   "Description": "Connect to VPN via WireGuard interfaces",
   "Author": "flooxo",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Language": "csharp",
   "Website": "https://github.com/flooxo/Flow.Plugin.WireGuard",
   "ExecuteFileName": "Flow.Launcher.Plugin.WireGuard.dll",

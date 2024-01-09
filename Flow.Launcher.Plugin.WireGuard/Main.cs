@@ -27,26 +27,27 @@ namespace Flow.Launcher.Plugin.WireGuard
         public List<Result> Query(Query query)
         {
             var interfaces = interfaceService.GetAll()
-               .Where(interface_ => interface_.name.Contains(query.Search, StringComparison.OrdinalIgnoreCase));
-            var connectedInterface = interfaces.FirstOrDefault(interface_ => interface_.isConnected);
+                .Where(interface_ => interface_.Name.Contains(query.Search, StringComparison.OrdinalIgnoreCase));
+            var connectedInterface = interfaces.FirstOrDefault(interface_ => interface_.IsConnected);
+            var hasConnection = connectedInterface != null;
 
             var results = interfaces
                 .Where(interface_ => interface_ != connectedInterface)
                 .Select(interface_ => new Result
                 {
-                    Title = interface_.name,
-                    SubTitle = interface_.getSubTitle(Context),
+                    Title = interface_.Name,
+                    SubTitle = interface_.GetSubTitle(Context, hasConnection, connectedInterface),
                     IcoPath = Image,
                     Score = 0,
                     Action = _ =>
                     {
-                        if (interface_.isConnected)
+                        if (interface_.IsConnected)
                         {
-                            interface_.deactivate();
+                            interface_.Deactivate();
                         }
                         else
                         {
-                            interface_.activate();
+                            interface_.Activate(hasConnection, connectedInterface);
                         }
 
                         return true;
@@ -59,13 +60,13 @@ namespace Flow.Launcher.Plugin.WireGuard
             {
                 var topResult = new Result
                 {
-                    Title = connectedInterface.name,
-                    SubTitle = connectedInterface.getSubTitle(Context),
+                    Title = connectedInterface.Name,
+                    SubTitle = connectedInterface.GetSubTitle(Context, hasConnection, connectedInterface),
                     IcoPath = Image,
                     Score = 1,
                     Action = _ =>
                     {
-                        connectedInterface.deactivate();
+                        connectedInterface.Deactivate();
                         return true;
                     }
                 };
