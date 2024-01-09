@@ -26,30 +26,53 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// <returns>A list of results based on the query.</returns>
         public List<Result> Query(Query query)
         {
-            var interfaces = interfaceService.GetAll();
-            var connectedInterface = interfaces.FirstOrDefault(interface_ => interface_.IsConnected);
-            var hasConnection = connectedInterface != null;
+            var interfaces = interfaceService.GetAll()
+               .Where(interface_ => interface_.name.Contains(query.Search, StringComparison.OrdinalIgnoreCase));
+            var connectedInterface = interfaces.FirstOrDefault(interface_ => interface_.isConnected);
 
-            return interfaces
+            var results = interfaces
+                .Where(interface_ => interface_ != connectedInterface)
                 .Select(interface_ => new Result
                 {
-                    Title = interface_.Name,
-                    SubTitle = interface_.GetSubTitle(Context, hasConnection, connectedInterface),
+                    Title = interface_.name,
+                    SubTitle = interface_.getSubTitle(Context),
                     IcoPath = Image,
+                    Score = 0,
                     Action = _ =>
                     {
-                        if (interface_.IsConnected)
+                        if (interface_.isConnected)
                         {
-                            interface_.Deactivate();
+                            interface_.deactivate();
                         }
                         else
                         {
-                            interface_.Activate(hasConnection, connectedInterface);
+                            interface_.activate();
                         }
+
                         return true;
                     }
                 })
                .ToList();
+
+            //Set disconnect as top result if available
+            if (connectedInterface != null)
+            {
+                var topResult = new Result
+                {
+                    Title = connectedInterface.name,
+                    SubTitle = connectedInterface.getSubTitle(Context),
+                    IcoPath = Image,
+                    Score = 1,
+                    Action = _ =>
+                    {
+                        connectedInterface.deactivate();
+                        return true;
+                    }
+                };
+                results.Insert(0, topResult);
+            }
+
+            return results;
         }
 
         /// <summary>
