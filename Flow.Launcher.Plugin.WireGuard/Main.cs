@@ -26,7 +26,6 @@ namespace Flow.Launcher.Plugin.WireGuard
         /// <returns>A list of results based on the query.</returns>
         public List<Result> Query(Query query)
         {
-            //TODO: set disconnect if available as top result
             var interfaces = interfaceService.GetAll()
                .Where(interface_ => interface_.name.Contains(query.Search, StringComparison.OrdinalIgnoreCase));
             var connectedInterface = interfaces.FirstOrDefault(interface_ => interface_.isConnected);
@@ -38,6 +37,7 @@ namespace Flow.Launcher.Plugin.WireGuard
                     Title = interface_.name,
                     SubTitle = interface_.getSubTitle(Context),
                     IcoPath = Image,
+                    Score = 0,
                     Action = _ =>
                     {
                         if (interface_.isConnected)
@@ -62,6 +62,7 @@ namespace Flow.Launcher.Plugin.WireGuard
                     Title = connectedInterface.name,
                     SubTitle = connectedInterface.getSubTitle(Context),
                     IcoPath = Image,
+                    Score = 1,
                     Action = _ =>
                     {
                         connectedInterface.deactivate();
